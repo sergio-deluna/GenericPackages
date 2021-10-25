@@ -4,6 +4,6 @@
     {
         bool Success { get; set; }
         string Message { get; set; }
-        public string DiagnosticData { get; set; }
+        string DiagnosticData { get; set; }
     }
 }
