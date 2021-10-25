@@ -1,12 +1,12 @@
-﻿using SimpleResult.Interfaces;
+﻿using GenericResult.Interfaces;
 using System;
-using System.Text;
+using System.Collections.Generic;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace SimpleResult
+namespace GenericResult
 {
-    public class SimpleResultGeneric<T> : IResult<T> where T : class
+    public class Result<T> : IResult<T>
     {
         [JsonInclude]
         public bool Success { get; set; }
@@ -15,7 +15,7 @@ namespace SimpleResult
         public string Message { get; set; }
 
         [JsonIgnore]
-        public string DiagnosticData { get; set; }
+        public string[] DiagnosticData { get; set; }
 
         public T Object { get; set; }
 
@@ -24,10 +24,10 @@ namespace SimpleResult
 
         public IResult<T> Error(string message, params object[] optionalParams)
         {
-            StringBuilder strs = new();
-            foreach (var obj in optionalParams)
-                strs.AppendLine(JsonSerializer.Serialize(obj));
-            (this.Success, this.Message, this.DiagnosticData) = (false, message, strs.ToString());
+            List<string> strs = new();
+            foreach (var obj in optionalParams ?? new object[0])
+                strs.Add(JsonSerializer.Serialize(obj));
+            (this.Success, this.Message, this.DiagnosticData) = (false, message, strs.ToArray());
             return this;
         }
 

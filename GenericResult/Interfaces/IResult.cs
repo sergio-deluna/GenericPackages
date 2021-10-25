@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SimpleResult.Interfaces
+namespace GenericResult.Interfaces
 {
     public interface IResult : IGenericStructure
     {

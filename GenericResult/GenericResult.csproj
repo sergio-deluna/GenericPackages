@@ -8,7 +8,7 @@
     <Description>Simple set of generic structures when simple success?-&gt;message-&gt;data information is required.</Description>
     <Authors>Sergio De Luna</Authors>
     <Company />
-    <PackageTags>SimpleResult;GenericResult;GenericResponse</PackageTags>
+    <PackageTags>IResult;Simple Result;Generic Result;Generic Response</PackageTags>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
   </PropertyGroup>
 

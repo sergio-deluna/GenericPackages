@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace SimpleResult.Interfaces
+namespace GenericResult.Interfaces
 {
-    public interface IResult<T> : IGenericStructure where T : class
+    public interface IResult<T> : IGenericStructure 
     {
         IResult<T> Error(Exception ex, params object[] optionalParams);
 
