@@ -11,7 +11,7 @@ namespace Test
         [TestMethod]
         public void SimpleResultOk()
         {
-            IResult res = new Result().Ok();
+            IxResult res = new Result().Ok();
 
             Assert.IsTrue(res.Success);
             Assert.IsNull(res.DiagnosticData);
@@ -21,7 +21,7 @@ namespace Test
         [TestMethod]
         public void SimpleResultError()
         {
-            IResult res = new Result().Error("Error test message");
+            IxResult res = new Result().Error("Error test message");
 
             Assert.IsFalse(res.Success);
             Assert.IsTrue(res.DiagnosticData.Length == 0);
@@ -31,7 +31,7 @@ namespace Test
         [TestMethod]
         public void SimpleResultDiagnosticData()
         {
-            IResult res = new Result().Error("", null);
+            IxResult res = new Result().Error("",null,null);
 
             Assert.IsFalse(res.Success);
             Assert.IsTrue(res.DiagnosticData.Length == 0);
@@ -41,7 +41,7 @@ namespace Test
         [TestMethod]
         public void SimpleResultDiagnosticDataGeneric()
         {
-            IResult<bool> res = new Result<bool>().Error("", null);
+            IxResult<bool> res = new Result<bool>().Error("", null,null);
 
             Assert.IsFalse(res.Success);
             Assert.IsTrue(res.DiagnosticData.Length == 0);
@@ -52,7 +52,7 @@ namespace Test
         public void SimpleResultDiagnosticDataGeneric2()
         {
             object[] someData = new object[] { true, false, 1, 3.3, "ultimo" };
-            IResult<bool> res = new Result<bool>().Error("Mensaje de errorde prueba", someData);
+            IxResult<bool> res = new Result<bool>().Error("Mensaje de errorde prueba", someData);
 
             Assert.IsFalse(res.Success);
             Assert.IsTrue(res.DiagnosticData.Length == someData.Length);
@@ -63,7 +63,7 @@ namespace Test
         public void SimpleResultDiagnosticDataGeneric3()
         {
             object[] someData = new object[] { "uno", "dos", 3, 4.0, null };
-            IResult<bool> res = new Result<bool>().Error("Mensaje de errorde prueba", true, false, someData, "ultimo");
+            IxResult<bool> res = new Result<bool>().Error("Mensaje de errorde prueba", true, false, someData, "ultimo");
 
             Assert.IsFalse(res.Success);
             Assert.IsTrue(res.DiagnosticData.Length == 4);
@@ -73,7 +73,7 @@ namespace Test
         [TestMethod]
         public void SimpleResultDiagnosticDataException()
         {
-            IResult<bool> res;
+            IxResult<bool> res;
             string testMessage = "Test of failing";
             try
             {
