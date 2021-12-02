@@ -2,6 +2,7 @@ using GenericResult;
 using GenericResult.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using System.Linq;
 
 namespace Test
 {
@@ -14,7 +15,8 @@ namespace Test
             IxResult res = new Result().Ok();
 
             Assert.IsTrue(res.Success);
-            Assert.IsNull(res.DiagnosticData);
+            Assert.IsNotNull(res.DiagnosticData);
+            Assert.IsFalse(res.DiagnosticData.Any());
             Assert.IsTrue(string.IsNullOrEmpty(res.Message));
         }
 
@@ -63,10 +65,10 @@ namespace Test
         public void SimpleResultDiagnosticDataGeneric3()
         {
             object[] someData = new object[] { "uno", "dos", 3, 4.0, null };
-            IxResult<bool> res = new Result<bool>().Error("Mensaje de errorde prueba", true, false, someData, "ultimo");
+            IxResult<bool> res = new Result<bool>().Error("Mensaje de error de prueba", true, false, someData, "ultimo");
 
             Assert.IsFalse(res.Success);
-            Assert.IsTrue(res.DiagnosticData.Length == 4);
+            Assert.IsTrue(res.DiagnosticData.Length == 3);
             Assert.IsTrue(!string.IsNullOrEmpty(res.Message));
         }
 
@@ -79,13 +81,13 @@ namespace Test
             {
                 throw new InvalidOperationException(testMessage);
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
                 object[] someData = new object[] { "uno", "dos", 3, 4.0, null };
                 res = new Result<bool>().Error(ex, true, false, someData, "ultimo");
             }
             Assert.IsFalse(res.Success);
-            Assert.IsTrue(res.DiagnosticData.Length == 4);
+            Assert.IsTrue(res.DiagnosticData.Length == 5); // includes the exception object
             Assert.IsTrue(!string.IsNullOrEmpty(res.Message));
             Assert.IsTrue(res.Message.Equals(testMessage));
         }

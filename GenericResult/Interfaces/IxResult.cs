@@ -42,6 +42,13 @@ namespace GenericResult.Interfaces
         /// Returns success = true with message = message parameter
         /// </summary>
         /// <param name="message">A non-sensitive message.</param>
+        /// <returns>The instance based on the <see cref="IxResult"/>interface</returns>
+        IxResult Ok(string message);
+
+        /// <summary>
+        /// Returns success = true with message = message parameter
+        /// </summary>
+        /// <param name="message">A non-sensitive message.</param>
         /// <param name="optionalParams">Not serialized.Always passed as diagnostic data.</param>
         /// <returns>The instance based on the <see cref="IxResult"/>interface</returns>
         IxResult Ok(string message, params object[] optionalParams);

@@ -60,21 +60,21 @@ namespace GenericResult.Interfaces
         IxResult<T> Error(string message, T obj, Exception ex, params object[] optionalParams);
 
         /// <summary>
-        /// Returns success = true with message = string.empty and null data
+        /// Returns success = true with message = string.empty and data = obj parameter
         /// </summary>
-        /// <returns></returns>
-        IxResult<T> Ok();
+        /// <returns>The instance based on the <see cref="IxResult{T}"/>interface</returns>
+        IxResult<T> Ok(T obj);
 
         /// <summary>
-        /// Returns success = true with message = message parameter and null data
+        /// Returns success = true with message = message parameter and data = obj parameter
         /// </summary>
         /// <param name="message">A non-sensitive message.</param>
-        /// <param name="optionalParams">Not serialized.Always passed as diagnostic data.</param>
+        /// <param name="obj">The data object to be returned</param>
         /// <returns>The instance based on the <see cref="IxResult{T}"/>interface</returns>
-        IxResult<T> Ok(string message, params object[] optionalParams);
+        IxResult<T> Ok(string message, T obj);
 
         /// <summary>
-        /// Returns success = true with message = message parameter
+        /// Returns success = true with message = message parameter and data = obj parameter
         /// </summary>
         /// <param name="message">A non-sensitive message.</param>
         /// <param name="obj">The data object to be returned</param>
@@ -83,7 +83,7 @@ namespace GenericResult.Interfaces
         IxResult<T> Ok(string message, T obj, params object[] optionalParams);
 
         /// <summary>
-        /// Returns success = true with message = string.empty and the data object
+        /// Returns success = true with message = string.empty and data = obj parameter
         /// </summary>
         /// <param name="obj">The data object to be returned</param>
         /// <param name="optionalParams">Not serialized.Always passed as diagnostic data.</param>
