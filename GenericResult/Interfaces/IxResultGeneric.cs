@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Extensions.Logging;
+using System;
 
 namespace GenericResult.Interfaces;
 
@@ -89,4 +90,7 @@ public interface IxResult<T> : IxBase
     /// <param name="optionalParams">Not serialized.Always passed as diagnostic data.</param>
     /// <returns>The instance based on the <see cref="IxResult{T}"/>interface</returns>
     IxResult<T> Ok(T obj, params object[] optionalParams);
+
+    IxResult<T> Log(ILogger logger);
+
 }

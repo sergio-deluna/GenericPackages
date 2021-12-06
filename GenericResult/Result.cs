@@ -1,8 +1,8 @@
 ﻿using GenericResult.Interfaces;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Text.Json;
-using System.Text.Json.Serialization;
 using System.Xml.Serialization;
 
 namespace GenericResult;
@@ -75,6 +75,12 @@ public class Result : IxResult
             strs.Add(ex.Message);
 
         (this.Success, this.Message, this.DiagnosticData) = (false, message, strs.ToArray());
+        return this;
+    }
+
+    public IxResult Log(ILogger logger)
+    {
+        logger.Log(this.Success ? LogLevel.Information : LogLevel.Error, this.Message, this.DiagnosticData);
         return this;
     }
 
