@@ -21,6 +21,6 @@ public class LogTest
         Assert.IsTrue(res.Success);
         Assert.IsNotNull(res.DiagnosticData);
         Assert.IsFalse(res.DiagnosticData.Any());
-        Assert.IsTrue(string.IsNullOrEmpty(res.Message));
+        Assert.IsFalse(string.IsNullOrEmpty(res.Message));
     }
 }
