@@ -92,5 +92,4 @@ public interface IxResult<T> : IxBase
     IxResult<T> Ok(T obj, params object[] optionalParams);
 
     IxResult<T> Log(ILogger logger);
-
 }
