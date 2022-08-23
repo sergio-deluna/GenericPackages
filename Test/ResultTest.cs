@@ -10,9 +10,9 @@ namespace Test
     public class ResultTest
     {
         [TestMethod]
-        public void SimpleResultOk()
+        public void ResultOk()
         {
-            IxResult res = new Result().Ok();
+            IResult res = new Result().Ok();
 
             Assert.IsTrue(res.Success);
             Assert.IsNotNull(res.DiagnosticData);
@@ -21,75 +21,71 @@ namespace Test
         }
 
         [TestMethod]
+        public void ResultOkWithMessage()
+        {
+            var msg = "Operation Successful";
+            IResult res = new Result().Ok(msg);
+
+            Assert.IsTrue(res.Success);
+            Assert.IsNotNull(res.DiagnosticData);
+            Assert.IsFalse(res.DiagnosticData.Any());
+            Assert.IsTrue(res.Message == msg);
+        }
+
+        [TestMethod]
+        public void ResultOkWithOptParams()
+        {
+            var msg = "Operation Successful";
+            object[] optionalParams = new object[] { "uno", "dos", 3, 4.0, null };
+
+            IResult res = new Result().Ok(msg, optionalParams);
+
+            Assert.IsTrue(res.Success);
+            Assert.IsNotNull(res.DiagnosticData);
+            Assert.IsTrue(res.DiagnosticData.Any());
+            Assert.IsTrue(res.DiagnosticData.Length == optionalParams.Length);
+            Assert.IsTrue(res.Message == msg);
+        }
+
+        [TestMethod]
         public void SimpleResultError()
         {
-            IxResult res = new Result().Error("Error test message");
+            object[] optionalParams = new object[] { "uno", "dos", 3, 4.0, null };
+            var msg = "Error test message";
+
+            IResult res = new Result().Error(msg, optionalParams);
 
             Assert.IsFalse(res.Success);
-            Assert.IsTrue(res.DiagnosticData.Length == 0);
-            Assert.IsTrue(!string.IsNullOrEmpty(res.Message));
+            Assert.IsTrue(res.DiagnosticData.Length == optionalParams.Length);
+            Assert.IsTrue(res.Message == msg);
         }
 
         [TestMethod]
-        public void SimpleResultDiagnosticData()
+        public void SimpleResultException()
         {
-            IxResult res = new Result().Error("",null,null);
+            object[] optionalParams = new object[] { "uno", "dos", 3, 4.0, null };
+            var msg = "Exception error test message";
+
+            IResult res = new Result().Error(new InvalidOperationException(msg), optionalParams);
 
             Assert.IsFalse(res.Success);
-            Assert.IsTrue(res.DiagnosticData.Length == 0);
-            Assert.IsTrue(string.IsNullOrEmpty(res.Message));
+            // + exception message
+            Assert.IsTrue(res.DiagnosticData.Length == optionalParams.Length + 1);
+            Assert.IsTrue(res.Message == string.Empty);
         }
 
         [TestMethod]
-        public void SimpleResultDiagnosticDataGeneric()
+        public void SimpleResultFullError()
         {
-            IxResult<bool> res = new Result<bool>().Error("", null,null);
+            object[] optionalParams = new object[] { "uno", "dos", 3, 4.0, null };
+            var msgEx = "Exception error test message";
+            var msg = "Error test message";
+            IResult res = new Result().Error(msg, new InvalidOperationException(msgEx), optionalParams);
 
             Assert.IsFalse(res.Success);
-            Assert.IsTrue(res.DiagnosticData.Length == 0);
-            Assert.IsTrue(string.IsNullOrEmpty(res.Message));
-        }
-
-        [TestMethod]
-        public void SimpleResultDiagnosticDataGeneric2()
-        {
-            object[] someData = new object[] { true, false, 1, 3.3, "ultimo" };
-            IxResult<bool> res = new Result<bool>().Error("Mensaje de errorde prueba", someData);
-
-            Assert.IsFalse(res.Success);
-            Assert.IsTrue(res.DiagnosticData.Length == someData.Length);
-            Assert.IsTrue(!string.IsNullOrEmpty(res.Message));
-        }
-
-        [TestMethod]
-        public void SimpleResultDiagnosticDataGeneric3()
-        {
-            object[] someData = new object[] { "uno", "dos", 3, 4.0, null };
-            IxResult<bool> res = new Result<bool>().Error("Mensaje de error de prueba", true, false, someData, "ultimo");
-
-            Assert.IsFalse(res.Success);
-            Assert.IsTrue(res.DiagnosticData.Length == 3);
-            Assert.IsTrue(!string.IsNullOrEmpty(res.Message));
-        }
-
-        [TestMethod]
-        public void SimpleResultDiagnosticDataException()
-        {
-            IxResult<bool> res;
-            string testMessage = "Test of failing";
-            try
-            {
-                throw new InvalidOperationException(testMessage);
-            }
-            catch (Exception ex)
-            {
-                object[] someData = new object[] { "uno", "dos", 3, 4.0, null };
-                res = new Result<bool>().Error(ex, true, false, someData, "ultimo");
-            }
-            Assert.IsFalse(res.Success);
-            Assert.IsTrue(res.DiagnosticData.Length == 5); // includes the exception object
-            Assert.IsTrue(!string.IsNullOrEmpty(res.Message));
-            Assert.IsTrue(res.Message.Equals(testMessage));
+            // + exception
+            Assert.IsTrue(res.DiagnosticData.Length == optionalParams.Length + 1);
+            Assert.IsTrue(res.Message == msg);
         }
     }
 }

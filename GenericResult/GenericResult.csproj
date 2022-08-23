@@ -2,7 +2,7 @@
 
   <PropertyGroup>
 	<LangVersion>10.0</LangVersion>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>netstandard2.1</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
@@ -11,11 +11,13 @@
     <Company />
     <PackageTags>IResult;Simple Result;Generic Result;Generic Response</PackageTags>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
-    <AssemblyName>IResult</AssemblyName>
+    <AssemblyName>IxResult</AssemblyName>
     <PackageProjectUrl>https://github.com/sergio-deluna/IResult</PackageProjectUrl>
     <RepositoryUrl>https://github.com/sergio-deluna/IResult</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageReleaseNotes>Initial release</PackageReleaseNotes>
+    <AssemblyVersion>1.0.0.1</AssemblyVersion>
+    <FileVersion>1.0.0.1</FileVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

@@ -1,25 +1,24 @@
-﻿using Microsoft.Extensions.Logging;
-using System;
+﻿using System;
 
 namespace GenericResult.Interfaces;
 
-public interface IxResult : IxBase
+public interface IResult : IResultBase
 {
     /// <summary>
     /// Returns success = false with message = exception.Message
     /// </summary>
     /// <param name="ex">Exception details passed as the message string</param>
     /// <param name="optionalParams">Not serialized.Always passed as diagnostic data.</param>
-    /// <returns>The instance based on the <see cref="IxResult"/>interface</returns>
-    IxResult Error(Exception ex, params object[] optionalParams);
+    /// <returns>The instance based on the <see cref="IResult"/>interface</returns>
+    IResult Error(Exception ex, params object[] optionalParams);
 
     /// <summary>
     /// Returns success = false with message = message parameter
     /// </summary>
     /// <param name="message">A non-sensitive message.</param>
     /// <param name="optionalParams">Not serialized.Always passed as diagnostic data.</param>
-    /// <returns>The instance based on the <see cref="IxResult"/>interface</returns>
-    IxResult Error(string message, params object[] optionalParams);
+    /// <returns>The instance based on the <see cref="IResult"/>interface</returns>
+    IResult Error(string message, params object[] optionalParams);
 
     /// <summary>
     /// Returns success = false with message = message parameter
@@ -30,29 +29,27 @@ public interface IxResult : IxBase
     /// This is because the exception object is too big for being serialized. If you need to serialize the exception object too,
     /// then pass the exception with the <paramref name="optionalParams"/> param.</param>
     /// <param name="optionalParams">Not serialized.Always passed as diagnostic data.</param>
-    /// <returns>The instance based on the <see cref="IxResult"/>interface</returns>
-    IxResult Error(string message, Exception ex, params object[] optionalParams);
+    /// <returns>The instance based on the <see cref="IResult"/>interface</returns>
+    IResult Error(string message, Exception ex, params object[] optionalParams);
 
     /// <summary>
     /// Returns success = true with message = string.empty
     /// </summary>
-    /// <returns>The instance based on the <see cref="IxResult"/>interface</returns>
-    IxResult Ok();
+    /// <returns>The instance based on the <see cref="IResult"/>interface</returns>
+    IResult Ok();
 
     /// <summary>
     /// Returns success = true with message = message parameter
     /// </summary>
     /// <param name="message">A non-sensitive message.</param>
-    /// <returns>The instance based on the <see cref="IxResult"/>interface</returns>
-    IxResult Ok(string message);
+    /// <returns>The instance based on the <see cref="IResult"/>interface</returns>
+    IResult Ok(string message);
 
     /// <summary>
     /// Returns success = true with message = message parameter
     /// </summary>
     /// <param name="message">A non-sensitive message.</param>
     /// <param name="optionalParams">Not serialized.Always passed as diagnostic data.</param>
-    /// <returns>The instance based on the <see cref="IxResult"/>interface</returns>
-    IxResult Ok(string message, params object[] optionalParams);
-
-    IxResult Log(ILogger logger);
+    /// <returns>The instance based on the <see cref="IResult"/>interface</returns>
+    IResult Ok(string message, params object[] optionalParams);
 }

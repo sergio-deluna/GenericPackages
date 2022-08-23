@@ -7,7 +7,7 @@ using System.Xml.Serialization;
 
 namespace GenericResult;
 
-public class Result : IxResult
+public class Result : IResult
 {
     /// <summary>Gets or sets a value indicating whether the operation was succesful or not.</summary>
     /// <value>
@@ -44,15 +44,15 @@ public class Result : IxResult
     /// <summary>Returns success = false with message = exception.Message</summary>
     /// <param name="ex">Exception details passed as the message string</param>
     /// <param name="optionalParams">Not serialized.Always passed as diagnostic data.</param>
-    /// <returns>The instance based on the <see cref="IxResult" />interface</returns>
-    public IxResult Error(Exception ex, params object[] optionalParams)
+    /// <returns>The instance based on the <see cref="IResult" />interface</returns>
+    public IResult Error(Exception ex, params object[] optionalParams)
         => Error(String.Empty, ex, optionalParams);
 
     /// <summary>Returns success = false with message = message parameter</summary>
     /// <param name="message">A non-sensitive message.</param>
     /// <param name="optionalParams">Not serialized.Always passed as diagnostic data.</param>
-    /// <returns>The instance based on the <see cref="IxResult" />interface</returns>
-    public IxResult Error(string message, params object[] optionalParams)
+    /// <returns>The instance based on the <see cref="IResult" />interface</returns>
+    public IResult Error(string message, params object[] optionalParams)
         => Error(message, default, optionalParams);
 
     /// <summary>Returns success = false with message = message parameter
@@ -64,8 +64,8 @@ public class Result : IxResult
     /// then pass the exception with the <paramref name="optionalParams" /> param.
     /// </param>
     /// <param name="optionalParams">Not serialized.Always passed as diagnostic data.</param>
-    /// <returns>The instance based on the <see cref="IxResult" />interface</returns>
-    public IxResult Error(string message, Exception ex, params object[] optionalParams)
+    /// <returns>The instance based on the <see cref="IResult" />interface</returns>
+    public IResult Error(string message, Exception ex, params object[] optionalParams)
     {
         List<string> strs = new();
         foreach (var param in optionalParams ?? new object[0])
@@ -78,28 +78,22 @@ public class Result : IxResult
         return this;
     }
 
-    public IxResult Log(ILogger logger)
-    {
-        logger.Log(this.Success ? LogLevel.Information : LogLevel.Error, this.Message, this.DiagnosticData);
-        return this;
-    }
-
     /// <summary>Returns success = true with message = message parameter</summary>
     /// <param name="message">A non-sensitive message.</param>
-    /// <returns>The instance based on the <see cref="IxResult" />interface</returns>
-    public IxResult Ok(string message)
+    /// <returns>The instance based on the <see cref="IResult" />interface</returns>
+    public IResult Ok(string message)
         => Ok(message, null);
 
     /// <summary>Returns success = true with message = string.empty</summary>
-    /// <returns>The instance based on the <see cref="IxResult" />interface</returns>
-    public IxResult Ok()
+    /// <returns>The instance based on the <see cref="IResult" />interface</returns>
+    public IResult Ok()
         => Ok(string.Empty, null);
 
     /// <summary>Returns success = true with message = message parameter</summary>
     /// <param name="message">A non-sensitive message.</param>
     /// <param name="optionalParams">Not serialized.Always passed as diagnostic data.</param>
-    /// <returns>The instance based on the <see cref="IxResult" />interface</returns>
-    public IxResult Ok(string message, params object[] optionalParams)
+    /// <returns>The instance based on the <see cref="IResult" />interface</returns>
+    public IResult Ok(string message, params object[] optionalParams)
     {
         List<string> strs = new();
         foreach (var param in optionalParams ?? new object[0])

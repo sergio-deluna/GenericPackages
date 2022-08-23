@@ -2,7 +2,7 @@
 
 namespace GenericResult.Interfaces;
 
-public interface IxBase
+public interface IResultBase
 {
     /// <summary>Gets or sets a value indicating whether the operation was succesful or not.</summary>
     /// <value>
