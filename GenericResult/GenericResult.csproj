@@ -11,7 +11,7 @@
     <Company />
     <PackageTags>IResult;Simple Result;Generic Result;Generic Response</PackageTags>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
-    <AssemblyName>IxResult</AssemblyName>
+    <AssemblyName>IResult</AssemblyName>
     <PackageProjectUrl>https://github.com/sergio-deluna/IResult</PackageProjectUrl>
     <RepositoryUrl>https://github.com/sergio-deluna/IResult</RepositoryUrl>
     <RepositoryType>git</RepositoryType>

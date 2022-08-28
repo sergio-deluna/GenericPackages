@@ -45,6 +45,9 @@ public class Result<T> : IResult<T>
     /// </summary>
     public T Object { get; set; }
 
+    public IResult<T> Error(T obj)
+    => this.Error(string.Empty, obj, default, null);
+
     /// <summary>Returns success = false with message = message parameter, but still returning data for whatever reason.</summary>
     /// <param name="message">A non-sensitive message.</param>
     /// <param name="obj">The data object to be returned</param>
@@ -52,6 +55,12 @@ public class Result<T> : IResult<T>
     /// <returns>The instance based on the <see cref="GenericResult.Interfaces.IResult{T}" />interface</returns>
     public IResult<T> Error(string message, T obj)
         => this.Error(message, obj, default, null);
+
+    public IResult<T> Error(T obj, Exception ex)
+        => this.Error(string.Empty, obj, ex, null);
+
+    public IResult<T> Error(Exception ex)
+     => this.Error(string.Empty, default, ex, null);
 
     /// <summary>
     /// Returns success = false with message = message parameter, but still returning data for whatever reason.
@@ -75,15 +84,9 @@ public class Result<T> : IResult<T>
         if (ex is not null)
             strs.Add(ex.Message);
 
-        (this.Success, this.Message, this.DiagnosticData) = (false, message, strs.ToArray());
+        (this.Success, this.Message, this.Object, this.DiagnosticData) = (false, message, obj, strs.ToArray());
         return this;
     }
-
-    public IResult<T> Error(T obj)
-        => this.Error(string.Empty, obj, default, null);
-
-    public IResult<T> Error(T obj, Exception ex)
-            => this.Error(string.Empty, obj, ex, null);
 
     /// <summary>Returns success = true with message = string.empty and data = obj parameter</summary>
     /// <param name="obj"></param>
