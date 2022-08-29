@@ -1,6 +1,8 @@
 ﻿using GenericResult.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using System.Text.Json;
 using System.Xml.Serialization;
 
@@ -44,6 +46,23 @@ public class Result<T> : IResult<T>
     /// The data object to be returned.
     /// </summary>
     public T Object { get; set; }
+
+    public override string ToString()
+    {
+        var str = new StringBuilder();
+        str.AppendLine($"{nameof(Success)}: {Success}");
+        str.AppendLine($"{nameof(Message)}:  {Message}");
+        str.AppendLine($"{nameof(Object)}:  {JsonSerializer.Serialize(this.Object ?? default)}");
+
+        if (DiagnosticData is not null && DiagnosticData.Any())
+        {
+            str.AppendLine($"{nameof(DiagnosticData)}: ");
+            for (var index = 0; index < DiagnosticData?.Length; index++)
+                str.AppendLine($" [{index}]: {DiagnosticData[index]}");
+        }
+
+        return str.ToString();
+    }
 
     public IResult<T> Error(T obj)
     => this.Error(string.Empty, obj, default, null);

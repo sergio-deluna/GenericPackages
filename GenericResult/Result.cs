@@ -1,7 +1,8 @@
 ﻿using GenericResult.Interfaces;
-using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using System.Text.Json;
 using System.Xml.Serialization;
 
@@ -41,6 +42,47 @@ public class Result : IResult
     [XmlIgnore]
     public string[] DiagnosticData { get; set; }
 
+    public override string ToString()
+    {
+        var str = new StringBuilder();
+        str.AppendLine($"{nameof(Success)}: {Success}");
+        str.AppendLine($"{nameof(Message)}:  {Message}");
+
+        if (DiagnosticData is not null && DiagnosticData.Any())
+        {
+            str.AppendLine($"{nameof(DiagnosticData)}: ");
+            for (var index = 0; index < DiagnosticData?.Length; index++)
+                str.AppendLine($" [{index}]: {DiagnosticData[index]}");
+        }
+
+        return str.ToString();
+    }
+
+    /// <summary>Returns success = true with message = message parameter</summary>
+    /// <param name="message">A non-sensitive message.</param>
+    /// <returns>The instance based on the <see cref="IResult" />interface</returns>
+    public IResult Ok(string message)
+        => Ok(message, null);
+
+    /// <summary>Returns success = true with message = string.empty</summary>
+    /// <returns>The instance based on the <see cref="IResult" />interface</returns>
+    public IResult Ok()
+        => Ok(string.Empty, null);
+
+    /// <summary>Returns success = true with message = message parameter</summary>
+    /// <param name="message">A non-sensitive message.</param>
+    /// <param name="optionalParams">Not serialized.Always passed as diagnostic data.</param>
+    /// <returns>The instance based on the <see cref="IResult" />interface</returns>
+    public IResult Ok(string message, params object[] optionalParams)
+    {
+        List<string> strs = new();
+        foreach (var param in optionalParams ?? new object[0])
+            strs.Add(param is Exception exception ? exception.Message : JsonSerializer.Serialize(param));
+
+        (this.Success, this.Message, this.DiagnosticData) = (true, message, strs.ToArray());
+        return this;
+    }
+
     /// <summary>Returns success = false with message = exception.Message</summary>
     /// <param name="ex">Exception details passed as the message string</param>
     /// <param name="optionalParams">Not serialized.Always passed as diagnostic data.</param>
@@ -75,31 +117,6 @@ public class Result : IResult
             strs.Add(ex.Message);
 
         (this.Success, this.Message, this.DiagnosticData) = (false, message, strs.ToArray());
-        return this;
-    }
-
-    /// <summary>Returns success = true with message = message parameter</summary>
-    /// <param name="message">A non-sensitive message.</param>
-    /// <returns>The instance based on the <see cref="IResult" />interface</returns>
-    public IResult Ok(string message)
-        => Ok(message, null);
-
-    /// <summary>Returns success = true with message = string.empty</summary>
-    /// <returns>The instance based on the <see cref="IResult" />interface</returns>
-    public IResult Ok()
-        => Ok(string.Empty, null);
-
-    /// <summary>Returns success = true with message = message parameter</summary>
-    /// <param name="message">A non-sensitive message.</param>
-    /// <param name="optionalParams">Not serialized.Always passed as diagnostic data.</param>
-    /// <returns>The instance based on the <see cref="IResult" />interface</returns>
-    public IResult Ok(string message, params object[] optionalParams)
-    {
-        List<string> strs = new();
-        foreach (var param in optionalParams ?? new object[0])
-            strs.Add(param is Exception exception ? exception.Message : JsonSerializer.Serialize(param));
-
-        (this.Success, this.Message, this.DiagnosticData) = (true, message, strs.ToArray());
         return this;
     }
 }

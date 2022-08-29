@@ -1,6 +1,8 @@
 ﻿using GenericResult;
+using GenericResult.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using System.Diagnostics;
 using System.Linq;
 
 namespace Test
@@ -12,6 +14,29 @@ namespace Test
         {
             public Guid Id { get; set; }
             public string Text { get; set; }
+        }
+
+        [TestMethod]
+        public void toStringTest()
+        {
+            var data = new mockClass
+            {
+                Id = Guid.NewGuid(),
+                Text = "Test text"
+            };
+
+            object[] optionalParams = new object[] { "uno", "dos", 3, 4.0, null };
+            var msgEx = "Exception error test message";
+            var msg = "Error test message";
+            IResult<mockClass> res = new Result<mockClass>().Ok(msg, data);
+            string txt = res.ToString();
+            Assert.IsNotNull(txt);
+            Debug.WriteLine(txt);
+
+            res = new Result<mockClass>().Error(msg, data, new InvalidOperationException(msgEx), optionalParams);
+            txt = res.ToString();
+            Assert.IsNotNull(txt);
+            Debug.WriteLine(txt);
         }
 
         [TestMethod]

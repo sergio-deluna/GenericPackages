@@ -2,6 +2,7 @@ using GenericResult;
 using GenericResult.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using System.Diagnostics;
 using System.Linq;
 
 namespace Test
@@ -9,6 +10,23 @@ namespace Test
     [TestClass]
     public class ResultTest
     {
+        [TestMethod]
+        public void toStringTest()
+        {
+            object[] optionalParams = new object[] { "uno", "dos", 3, 4.0, null };
+            var msgEx = "Exception error test message";
+            var msg = "Error test message";
+            IResult res = new Result().Ok(msg);
+            string txt = res.ToString();
+            Assert.IsNotNull(txt);
+            Debug.WriteLine(txt);
+
+            res = new Result().Error(msg, new InvalidOperationException(msgEx), optionalParams);
+            txt = res.ToString();
+            Assert.IsNotNull(txt);
+            Debug.WriteLine(txt);
+        }
+
         [TestMethod]
         public void ResultOk()
         {
