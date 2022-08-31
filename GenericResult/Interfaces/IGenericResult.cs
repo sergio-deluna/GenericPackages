@@ -9,8 +9,20 @@ public interface IResult<T> : IResultBase
     /// </summary>
     T Object { get; set; }
 
+    /// <summary>
+    /// Returns success = false but still returning data for whatever reason.
+    /// </summary>
+    /// <param name="obj">The data object to be returned</param>
+    /// <returns>The instance based on the <see cref="GenericResult.Interfaces.IResult{T}" />interface</returns>
     IResult<T> Error(T obj);
 
+    /// <summary>
+    /// Returns success = false with message = message parameter, but still returning data for whatever reason.
+    /// </summary>
+    /// <param name="message">A non-sensitive message.</param>
+    /// <param name="obj">The data object to be returned</param>
+    /// <param name="optionalParams">Not serialized.Always passed as diagnostic data.</param>
+    /// <returns>The instance based on the <see cref="GenericResult.Interfaces.IResult{T}" />interface</returns>
     IResult<T> Error(T obj, Exception ex);
 
     /// <summary>

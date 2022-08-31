@@ -47,6 +47,13 @@ public class Result<T> : IResult<T>
     /// </summary>
     public T Object { get; set; }
 
+    /// <summary>
+    /// Gets the string representation of each property, including the diagnostic data.
+    /// The purpose of this override is to be used only to print values to the console or output window.
+    /// </summary>
+    /// <returns>
+    /// A <see cref="System.String" /> that describes this instance.
+    /// </returns>
     public override string ToString()
     {
         var str = new StringBuilder();
@@ -64,10 +71,17 @@ public class Result<T> : IResult<T>
         return str.ToString();
     }
 
+    /// <summary>
+    /// Returns success = false but still returning data for whatever reason.
+    /// </summary>
+    /// <param name="obj">The data object to be returned</param>
+    /// <returns>The instance based on the <see cref="GenericResult.Interfaces.IResult{T}" />interface</returns>
     public IResult<T> Error(T obj)
-    => this.Error(string.Empty, obj, default, null);
+        => this.Error(string.Empty, obj, default, null);
 
-    /// <summary>Returns success = false with message = message parameter, but still returning data for whatever reason.</summary>
+    /// <summary>
+    /// Returns success = false with message = message parameter, but still returning data for whatever reason.
+    /// </summary>
     /// <param name="message">A non-sensitive message.</param>
     /// <param name="obj">The data object to be returned</param>
     /// <param name="optionalParams">Not serialized.Always passed as diagnostic data.</param>
@@ -75,11 +89,32 @@ public class Result<T> : IResult<T>
     public IResult<T> Error(string message, T obj)
         => this.Error(message, obj, default, null);
 
+    /// <summary>
+    /// Returns success = false but still returning data for whatever reason.
+    /// The exception is not serialized, but its message exception is included as diagnostic data.
+    /// </summary>
+    /// <param name="obj">The data object to be returned</param>
+    /// <param name="ex">
+    /// Its message exception is included as diagnostic data.
+    /// This is because the exception object is too big for being serialized. If you need to serialize the exception object too,
+    /// then pass the exception with the <paramref name="optionalParams" /> param.
+    /// </param>
+    /// <returns>The instance based on the <see cref="GenericResult.Interfaces.IResult{T}" />interface</returns>
     public IResult<T> Error(T obj, Exception ex)
         => this.Error(string.Empty, obj, ex, null);
 
+    /// <summary>
+    /// Returns success = false
+    /// The exception is not serialized, but its message exception is included as diagnostic data.    
+    /// </summary>
+    /// <param name="ex">
+    /// Its message exception is included as diagnostic data.
+    /// This is because the exception object is too big for being serialized. If you need to serialize the exception object too,
+    /// then pass the exception with the <paramref name="optionalParams" /> param.
+    /// </param>
+    /// <returns>The instance based on the <see cref="GenericResult.Interfaces.IResult{T}" />interface</returns>
     public IResult<T> Error(Exception ex)
-     => this.Error(string.Empty, default, ex, null);
+        => this.Error(string.Empty, default, ex, null);
 
     /// <summary>
     /// Returns success = false with message = message parameter, but still returning data for whatever reason.
@@ -108,7 +143,7 @@ public class Result<T> : IResult<T>
     }
 
     /// <summary>Returns success = true with message = string.empty and data = obj parameter</summary>
-    /// <param name="obj"></param>
+    /// <param name="obj">The data object to be returned</param>
     /// <returns>The instance based on the <see cref="GenericResult.Interfaces.IResult{T}" />interface</returns>
     public IResult<T> Ok(T obj)
         => Ok(string.Empty, obj, null);
@@ -125,7 +160,7 @@ public class Result<T> : IResult<T>
     /// <param name="optionalParams">Not serialized.Always passed as diagnostic data.</param>
     /// <returns>The instance based on the <see cref="GenericResult.Interfaces.IResult{T}" />interface</returns>
     public IResult<T> Ok(T obj, params object[] optionalParams)
-     => this.Ok(string.Empty, obj, optionalParams);
+        => this.Ok(string.Empty, obj, optionalParams);
 
     /// <summary>Returns success = true with message = message parameter and data = obj parameter</summary>
     /// <param name="message">A non-sensitive message.</param>

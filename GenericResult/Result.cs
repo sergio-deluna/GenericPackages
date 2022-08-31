@@ -42,6 +42,13 @@ public class Result : IResult
     [XmlIgnore]
     public string[] DiagnosticData { get; set; }
 
+    /// <summary>
+    /// Gets the string representation of each property, including the diagnostic data.
+    /// The purpose of this override is to be used only to print values to the console or output window.
+    /// </summary>
+    /// <returns>
+    /// A <see cref="System.String" /> that describes this instance.
+    /// </returns>
     public override string ToString()
     {
         var str = new StringBuilder();
