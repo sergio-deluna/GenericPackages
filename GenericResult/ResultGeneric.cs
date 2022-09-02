@@ -58,7 +58,7 @@ public class Result<T> : IResult<T>
     {
         var str = new StringBuilder();
         str.AppendLine($"{nameof(Success)}: {Success}");
-        str.AppendLine($"{nameof(Message)}:  {Message}");
+        str.AppendLine($"{nameof(Message)}: {Message}");
         str.AppendLine($"{nameof(Object)}:  {JsonSerializer.Serialize(this.Object ?? default)}");
 
         if (DiagnosticData is not null && DiagnosticData.Any())

@@ -53,7 +53,7 @@ public class Result : IResult
     {
         var str = new StringBuilder();
         str.AppendLine($"{nameof(Success)}: {Success}");
-        str.AppendLine($"{nameof(Message)}:  {Message}");
+        str.AppendLine($"{nameof(Message)}: {Message}");
 
         if (DiagnosticData is not null && DiagnosticData.Any())
         {

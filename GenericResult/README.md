@@ -7,7 +7,7 @@ There are two main interfaces for returning results:\
 ```cs
         bool Success            
         string Message        
-        string[] DiagnosticData  //Not included when serialized into json representation. Just for debugging purposes
+        string[] DiagnosticData  //Not included when serialized into json or xml representation. Just for debugging purposes
 ```
 ***IResult\<T>***:
 ```cs
@@ -41,47 +41,72 @@ And some methods for making easy and simplified response constructions \
         IResult Ok();
         IResult Ok(string message);
         IResult Ok(string message, params object[] optionalParams);
-
-        // call to logger.Log(this.Success ? LogLevel.Information : LogLevel.Error, this.Message, this.DiagnosticData)
-        // intended for making shorter and simpler lines of code. Does not catch any exception. 
-        IResult Log(ILogger logger);
-
 ```
 ***IResult\<T>***
 ```cs
         // sets Success = false. More details can be found in the comments in the source code or via intellisense
-        IResult<T> Error(Exception ex, params object[] optionalParams);
-        IResult<T> Error(string message, params object[] optionalParams);
-        IResult<T> Error(string message, T obj, params object[] optionalParams);
-        IResult<T> Error(string message, Exception ex, params object[] optionalParams);
+        IResult<T> Error(T obj);
+        IResult<T> Error(T obj, Exception ex);
+        IResult<T> Error(string message, T obj);
         IResult<T> Error(string message, T obj, Exception ex, params object[] optionalParams);
 
         // sets Success = true. More details can be found in the comments in the source code or via intellisense
         IResult<T> Ok(T obj);
         IResult<T> Ok(string message, T obj);
-        IResult<T> Ok(string message, T obj, params object[] optionalParams);
         IResult<T> Ok(T obj, params object[] optionalParams);
-
-        // call to logger.Log(this.Success ? LogLevel.Information : LogLevel.Error, this.Message, this.DiagnosticData)
-        // intended for making shorter and simpler lines of code. Does not catch any exception. 
-        IResult<T> Log(ILogger logger);
+        IResult<T> Ok(string message, T obj, params object[] optionalParams);
 ```
-## Quick Examples
-Some examples: 
+***ToString() Override***
+
+Both classes Result & Result\<T> have a ToString() overridden method. 
+The intention of this, is to get details quickly, as printing to the console or the output window.
+
+An example of this:
 ```cs
+Success: False
+Message: Error test message
+Object:  {"Id":"c32426fe-f47f-4299-9a96-2914e1cd4307","Text":"Test text"}
+DiagnosticData: 
+ [0]: "uno"
+ [1]: "dos"
+ [2]: 3
+ [3]: 4
+ [4]: null
+ [5]: Exception error test message
+ ```
 
-        // simple result without any data
-        IResult res = new Result().Ok();
+## Quick Examples
+IResult examples: 
+```cs
+        object[] optionalParams = new object[] { "uno", "dos", 3, 4.0, null };
+        var msgEx = "Exception error test message";
+        var msg = "Error test message";
 
-        // simple error result
-        IResult res = new Result().Error("Error test message");
+        // Simple result with Success = true and Message = msg
+        IResult res = new Result().Ok(msg);
+        
+        // Simple error result with success = false with message = msg
+        // and DiagnosticData filled with the exception.Message and each optionalParams values as Json data.
+        res = new Result().Error(msg, new InvalidOperationException(msgEx), optionalParams);    
+```
 
-        // typical exception handling pattern, with aditional data
-        IResult<bool> res;
-        ...
-        catch (System.Exception ex)
+IResult<T> examples: 
+```cs           
+        var msg = "Success";
+        var ex = new InvalidOperationException("Error");
+        object[] optionalParams = new object[] { "uno", "dos", 3, 4.0, null };
+
+        var data = new mockClass
         {
-            object[] someData = new object[] { "uno", "dos", 3, 4.0, null };
-            res = new Result<bool>().Error(ex, true, false, someData, "ultimo");
-        }
+            Id = Guid.NewGuid(),
+            Text = "Test text"
+        };
+
+        // Result with Success=true, Message = msg, Object = data
+        // and DiagnosticData filled with each optionalParams values as Json data.
+        var res = new Result<mockClass>().Ok(msg, data, optionalParams);
+
+        // Result with Success=false, Object = data
+        // and DiagnosticData with the exception.Message
+        var res = new Result<mockClass>().Error(data, ex);            
 ```
