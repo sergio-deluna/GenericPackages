@@ -1,4 +1,4 @@
-﻿namespace GenericException;
+﻿namespace GenericException.Interfaces;
 
 public interface ICustomException
 {

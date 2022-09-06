@@ -14,9 +14,10 @@ public interface IException
 }
 ```
 
-Exceptions: 
+Exception hierarchy: 
 
 ```cs
-BusinessException
-DataCorruptionException
+CustomExceptionBase
+-- BusinessException
+-- DataCorruptionException
 ```
