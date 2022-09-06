@@ -15,11 +15,10 @@
     <PackageProjectUrl>https://github.com/sergio-deluna/IResult</PackageProjectUrl>
     <RepositoryUrl>https://github.com/sergio-deluna/IResult</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
-    <PackageReleaseNotes>Helper methods modified.
-ToString overriden method added</PackageReleaseNotes>
+    <PackageReleaseNotes>Version number fixed :P</PackageReleaseNotes>
     <AssemblyVersion>1.0.0.2</AssemblyVersion>
     <FileVersion>1.0.0.2</FileVersion>
-    <Version>1.0.0.2</Version>
+    <Version>1.0.2</Version>
     <Title>IResult</Title>
   </PropertyGroup>
 

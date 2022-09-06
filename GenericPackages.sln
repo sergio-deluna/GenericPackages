@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GenericResult", "GenericRes
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Test", "Test\Test.csproj", "{43762485-2703-4B2E-90B5-EFE8CF4ED192}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GenericException", "GenericException\GenericException.csproj", "{9DBA90AD-BA3D-4C9D-B9C2-3C6E8644E3C1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{43762485-2703-4B2E-90B5-EFE8CF4ED192}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{43762485-2703-4B2E-90B5-EFE8CF4ED192}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{43762485-2703-4B2E-90B5-EFE8CF4ED192}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9DBA90AD-BA3D-4C9D-B9C2-3C6E8644E3C1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9DBA90AD-BA3D-4C9D-B9C2-3C6E8644E3C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9DBA90AD-BA3D-4C9D-B9C2-3C6E8644E3C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9DBA90AD-BA3D-4C9D-B9C2-3C6E8644E3C1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
