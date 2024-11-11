@@ -1,5 +1,5 @@
-﻿using GenericException.Interfaces;
-using System;
+﻿using System;
+using GenericException.Interfaces;
 
 namespace GenericException;
 
@@ -17,4 +17,6 @@ public class CustomExceptionBase : Exception, ICustomException
     /// The error code.
     /// </value>
     public string ExceptionCode { get; set; } = string.Empty;
+
+    public string CustomExceptionMessage { get; set; } = string.Empty;
 }
