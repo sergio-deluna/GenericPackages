@@ -9,7 +9,6 @@ public interface IResultBase
     ///   <c>true</c> if success; otherwise, <c>false</c>.
     /// </value>
     [System.Text.Json.Serialization.JsonInclude]
-    [Newtonsoft.Json.JsonProperty]
     [XmlElement]
     bool Success { get; set; }
 
@@ -20,7 +19,6 @@ public interface IResultBase
     /// </summary>
     /// <value>The message.</value>
     [System.Text.Json.Serialization.JsonInclude]
-    [Newtonsoft.Json.JsonProperty]
     [XmlElement]
     string Message { get; set; }
 
@@ -32,7 +30,6 @@ public interface IResultBase
     /// </summary>
     /// <value>The diagnostic data.</value>
     [System.Text.Json.Serialization.JsonIgnore]
-    [Newtonsoft.Json.JsonIgnore]
     [XmlIgnore]
     string[] DiagnosticData { get; set; }
 }

@@ -13,7 +13,7 @@ namespace Test
         [TestMethod]
         public void toStringTest()
         {
-            object[] optionalParams = new object[] { "uno", "dos", 3, 4.0, null };
+            object[] optionalParams = ["uno", "dos", 3, 4.0, null];
             var msgEx = "Exception error test message";
             var msg = "Error test message";
             IResult res = new Result().Ok(msg);
@@ -34,7 +34,7 @@ namespace Test
 
             Assert.IsTrue(res.Success);
             Assert.IsNotNull(res.DiagnosticData);
-            Assert.IsFalse(res.DiagnosticData.Any());
+            Assert.AreEqual(0, res.DiagnosticData.Length);
             Assert.IsTrue(string.IsNullOrEmpty(res.Message));
         }
 
@@ -46,64 +46,64 @@ namespace Test
 
             Assert.IsTrue(res.Success);
             Assert.IsNotNull(res.DiagnosticData);
-            Assert.IsFalse(res.DiagnosticData.Any());
-            Assert.IsTrue(res.Message == msg);
+            Assert.AreEqual(0, res.DiagnosticData.Length);
+            Assert.AreEqual(msg, res.Message);
         }
 
         [TestMethod]
         public void ResultOkWithOptParams()
         {
             var msg = "Operation Successful";
-            object[] optionalParams = new object[] { "uno", "dos", 3, 4.0, null };
+            object[] optionalParams = ["uno", "dos", 3, 4.0, null];
 
             IResult res = new Result().Ok(msg, optionalParams);
 
             Assert.IsTrue(res.Success);
             Assert.IsNotNull(res.DiagnosticData);
-            Assert.IsTrue(res.DiagnosticData.Any());
-            Assert.IsTrue(res.DiagnosticData.Length == optionalParams.Length);
-            Assert.IsTrue(res.Message == msg);
+            Assert.AreNotEqual(0, res.DiagnosticData.Length);
+            Assert.AreEqual(optionalParams.Length, res.DiagnosticData.Length);
+            Assert.AreEqual(msg, res.Message);
         }
 
         [TestMethod]
         public void SimpleResultError()
         {
-            object[] optionalParams = new object[] { "uno", "dos", 3, 4.0, null };
+            object[] optionalParams = ["uno", "dos", 3, 4.0, null];
             var msg = "Error test message";
 
             IResult res = new Result().Error(msg, optionalParams);
 
             Assert.IsFalse(res.Success);
-            Assert.IsTrue(res.DiagnosticData.Length == optionalParams.Length);
-            Assert.IsTrue(res.Message == msg);
+            Assert.AreEqual(optionalParams.Length, res.DiagnosticData.Length);
+            Assert.AreEqual(msg, res.Message);
         }
 
         [TestMethod]
         public void SimpleResultException()
         {
-            object[] optionalParams = new object[] { "uno", "dos", 3, 4.0, null };
+            object[] optionalParams = ["uno", "dos", 3, 4.0, null];
             var msg = "Exception error test message";
 
             IResult res = new Result().Error(new InvalidOperationException(msg), optionalParams);
 
             Assert.IsFalse(res.Success);
             // + exception message
-            Assert.IsTrue(res.DiagnosticData.Length == optionalParams.Length + 1);
-            Assert.IsTrue(res.Message == string.Empty);
+            Assert.AreEqual(optionalParams.Length + 1, res.DiagnosticData.Length);
+            Assert.AreEqual(string.Empty, res.Message);
         }
 
         [TestMethod]
         public void SimpleResultFullError()
         {
-            object[] optionalParams = new object[] { "uno", "dos", 3, 4.0, null };
+            object[] optionalParams = ["uno", "dos", 3, 4.0, null];
             var msgEx = "Exception error test message";
             var msg = "Error test message";
             IResult res = new Result().Error(msg, new InvalidOperationException(msgEx), optionalParams);
 
             Assert.IsFalse(res.Success);
             // + exception
-            Assert.IsTrue(res.DiagnosticData.Length == optionalParams.Length + 1);
-            Assert.IsTrue(res.Message == msg);
+            Assert.AreEqual(optionalParams.Length + 1, res.DiagnosticData.Length);
+            Assert.AreEqual(msg, res.Message);
         }
     }
 }

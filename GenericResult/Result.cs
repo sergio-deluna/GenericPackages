@@ -1,10 +1,10 @@
-﻿using GenericResult.Interfaces;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.Json;
 using System.Xml.Serialization;
+using GenericResult.Interfaces;
 
 namespace GenericResult;
 
@@ -15,7 +15,6 @@ public class Result : IResult
     ///   <c>true</c> if success; otherwise, <c>false</c>.
     ///   </value>
     [System.Text.Json.Serialization.JsonInclude]
-    [Newtonsoft.Json.JsonProperty]
     [XmlElement]
     public bool Success { get; set; }
 
@@ -26,7 +25,6 @@ public class Result : IResult
     /// </summary>
     /// <value>The message.</value>
     [System.Text.Json.Serialization.JsonInclude]
-    [Newtonsoft.Json.JsonProperty]
     [XmlElement]
     public string Message { get; set; }
 
@@ -38,7 +36,6 @@ public class Result : IResult
     /// </summary>
     /// <value>The diagnostic data.</value>
     [System.Text.Json.Serialization.JsonIgnore]
-    [Newtonsoft.Json.JsonIgnore]
     [XmlIgnore]
     public string[] DiagnosticData { get; set; }
 
@@ -55,7 +52,7 @@ public class Result : IResult
         str.AppendLine($"{nameof(Success)}: {Success}");
         str.AppendLine($"{nameof(Message)}: {Message}");
 
-        if (DiagnosticData is not null && DiagnosticData.Any())
+        if (DiagnosticData is not null && DiagnosticData.Length != 0)
         {
             str.AppendLine($"{nameof(DiagnosticData)}: ");
             for (var index = 0; index < DiagnosticData?.Length; index++)
@@ -82,8 +79,8 @@ public class Result : IResult
     /// <returns>The instance based on the <see cref="IResult" />interface</returns>
     public IResult Ok(string message, params object[] optionalParams)
     {
-        List<string> strs = new();
-        foreach (var param in optionalParams ?? new object[0])
+        List<string> strs = [];
+        foreach (var param in optionalParams ?? [])
             strs.Add(param is Exception exception ? exception.Message : JsonSerializer.Serialize(param));
 
         (this.Success, this.Message, this.DiagnosticData) = (true, message, strs.ToArray());
@@ -116,8 +113,8 @@ public class Result : IResult
     /// <returns>The instance based on the <see cref="IResult" />interface</returns>
     public IResult Error(string message, Exception ex, params object[] optionalParams)
     {
-        List<string> strs = new();
-        foreach (var param in optionalParams ?? new object[0])
+        List<string> strs = [];
+        foreach (var param in optionalParams ?? [])
             strs.Add(param is Exception exception ? exception.Message : JsonSerializer.Serialize(param));
 
         if (ex is not null)

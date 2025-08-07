@@ -10,30 +10,30 @@ namespace Test
     [TestClass]
     public class ResultGenericTest
     {
-        internal class mockClass
+        internal class MockClass
         {
             public Guid Id { get; set; }
             public string Text { get; set; }
         }
 
         [TestMethod]
-        public void toStringTest()
+        public void ToStringTest()
         {
-            var data = new mockClass
+            var data = new MockClass
             {
                 Id = Guid.NewGuid(),
                 Text = "Test text"
             };
 
-            object[] optionalParams = new object[] { "uno", "dos", 3, 4.0, null };
+            object[] optionalParams = ["uno", "dos", 3, 4.0, null];
             var msgEx = "Exception error test message";
             var msg = "Error test message";
-            IResult<mockClass> res = new Result<mockClass>().Ok(msg, data);
+            IResult<MockClass> res = new Result<MockClass>().Ok(msg, data);
             string txt = res.ToString();
             Assert.IsNotNull(txt);
             Debug.WriteLine(txt);
 
-            res = new Result<mockClass>().Error(msg, data, new InvalidOperationException(msgEx), optionalParams);
+            res = new Result<MockClass>().Error(msg, data, new InvalidOperationException(msgEx), optionalParams);
             txt = res.ToString();
             Assert.IsNotNull(txt);
             Debug.WriteLine(txt);
@@ -42,21 +42,21 @@ namespace Test
         [TestMethod]
         public void ResultOk()
         {
-            var data = new mockClass
+            var data = new MockClass
             {
                 Id = Guid.NewGuid(),
                 Text = "Test text"
             };
 
-            var res = new Result<mockClass>().Ok(data);
+            var res = new Result<MockClass>().Ok(data);
 
             Assert.IsNotNull(res);
             Assert.IsTrue(res.Success);
             Assert.IsNotNull(res.Object);
-            Assert.IsTrue(res.Message == string.Empty);
-            Assert.IsFalse(res.DiagnosticData.Any());
+            Assert.AreEqual(string.Empty, res.Message);
+            Assert.AreEqual(0, res.DiagnosticData.Length);
 
-            Assert.IsInstanceOfType(res.Object, typeof(mockClass));
+            Assert.IsInstanceOfType(res.Object, typeof(MockClass));
             Assert.AreEqual(data.Id, res.Object.Id);
             Assert.AreEqual(data.Text, res.Object.Text);
         }
@@ -65,21 +65,21 @@ namespace Test
         public void ResultOkWithMessage()
         {
             var msg = "Success";
-            var data = new mockClass
+            var data = new MockClass
             {
                 Id = Guid.NewGuid(),
                 Text = "Test text"
             };
 
-            var res = new Result<mockClass>().Ok(msg, data);
+            var res = new Result<MockClass>().Ok(msg, data);
 
             Assert.IsNotNull(res);
             Assert.IsTrue(res.Success);
             Assert.IsNotNull(res.Object);
-            Assert.IsTrue(res.Message == msg);
-            Assert.IsFalse(res.DiagnosticData.Any());
+            Assert.AreEqual(msg, res.Message);
+            Assert.AreEqual(0, res.DiagnosticData.Length);
 
-            Assert.IsInstanceOfType(res.Object, typeof(mockClass));
+            Assert.IsInstanceOfType(res.Object, typeof(MockClass));
             Assert.AreEqual(data.Id, res.Object.Id);
             Assert.AreEqual(data.Text, res.Object.Text);
         }
@@ -87,23 +87,23 @@ namespace Test
         [TestMethod]
         public void ResultOkWithOptionalParams()
         {
-            object[] optionalParams = new object[] { "uno", "dos", 3, 4.0, null };
+            object[] optionalParams = ["uno", "dos", 3, 4.0, null];
 
-            var data = new mockClass
+            var data = new MockClass
             {
                 Id = Guid.NewGuid(),
                 Text = "Test text"
             };
 
-            var res = new Result<mockClass>().Ok(data, optionalParams);
+            var res = new Result<MockClass>().Ok(data, optionalParams);
 
             Assert.IsNotNull(res);
             Assert.IsTrue(res.Success);
             Assert.IsNotNull(res.Object);
-            Assert.IsTrue(res.Message == string.Empty);
-            Assert.IsTrue(res.DiagnosticData.Length == optionalParams.Length);
+            Assert.AreEqual(string.Empty, res.Message);
+            Assert.AreEqual(optionalParams.Length, res.DiagnosticData.Length);
 
-            Assert.IsInstanceOfType(res.Object, typeof(mockClass));
+            Assert.IsInstanceOfType(res.Object, typeof(MockClass));
             Assert.AreEqual(data.Id, res.Object.Id);
             Assert.AreEqual(data.Text, res.Object.Text);
         }
@@ -112,23 +112,23 @@ namespace Test
         public void ResultOkFull()
         {
             var msg = "Success";
-            object[] optionalParams = new object[] { "uno", "dos", 3, 4.0, null };
+            object[] optionalParams = ["uno", "dos", 3, 4.0, null];
 
-            var data = new mockClass
+            var data = new MockClass
             {
                 Id = Guid.NewGuid(),
                 Text = "Test text"
             };
 
-            var res = new Result<mockClass>().Ok(msg, data, optionalParams);
+            var res = new Result<MockClass>().Ok(msg, data, optionalParams);
 
             Assert.IsNotNull(res);
             Assert.IsTrue(res.Success);
             Assert.IsNotNull(res.Object);
-            Assert.IsTrue(res.Message == msg);
-            Assert.IsTrue(res.DiagnosticData.Length == optionalParams.Length);
+            Assert.AreEqual(msg, res.Message);
+            Assert.AreEqual(optionalParams.Length, res.DiagnosticData.Length);
 
-            Assert.IsInstanceOfType(res.Object, typeof(mockClass));
+            Assert.IsInstanceOfType(res.Object, typeof(MockClass));
             Assert.AreEqual(data.Id, res.Object.Id);
             Assert.AreEqual(data.Text, res.Object.Text);
         }
@@ -136,21 +136,21 @@ namespace Test
         [TestMethod]
         public void GenericResultError()
         {
-            var data = new mockClass
+            var data = new MockClass
             {
                 Id = Guid.NewGuid(),
                 Text = "Test text"
             };
 
-            var res = new Result<mockClass>().Error(data);
+            var res = new Result<MockClass>().Error(data);
 
             Assert.IsNotNull(res);
             Assert.IsFalse(res.Success);
             Assert.IsNotNull(res.Object);
-            Assert.IsTrue(res.Message == string.Empty);
-            Assert.IsFalse(res.DiagnosticData.Any());
+            Assert.AreEqual(string.Empty, res.Message);
+            Assert.AreEqual(0, res.DiagnosticData.Length);
 
-            Assert.IsInstanceOfType(res.Object, typeof(mockClass));
+            Assert.IsInstanceOfType(res.Object, typeof(MockClass));
             Assert.AreEqual(data.Id, res.Object.Id);
             Assert.AreEqual(data.Text, res.Object.Text);
         }
@@ -159,21 +159,21 @@ namespace Test
         public void GenericResultErrorWithMessage()
         {
             var msg = "Error";
-            var data = new mockClass
+            var data = new MockClass
             {
                 Id = Guid.NewGuid(),
                 Text = "Test text"
             };
 
-            var res = new Result<mockClass>().Error(msg, data);
+            var res = new Result<MockClass>().Error(msg, data);
 
             Assert.IsNotNull(res);
             Assert.IsFalse(res.Success);
             Assert.IsNotNull(res.Object);
-            Assert.IsTrue(res.Message == msg);
-            Assert.IsFalse(res.DiagnosticData.Any());
+            Assert.AreEqual(msg, res.Message);
+            Assert.AreEqual(0, res.DiagnosticData.Length);
 
-            Assert.IsInstanceOfType(res.Object, typeof(mockClass));
+            Assert.IsInstanceOfType(res.Object, typeof(MockClass));
             Assert.AreEqual(data.Id, res.Object.Id);
             Assert.AreEqual(data.Text, res.Object.Text);
         }
@@ -183,14 +183,14 @@ namespace Test
         {
             var ex = new InvalidOperationException("Error");
 
-            var res = new Result<mockClass>().Error(ex);
+            var res = new Result<MockClass>().Error(ex);
 
             Assert.IsNotNull(res);
             Assert.IsFalse(res.Success);
             Assert.IsNull(res.Object);
-            Assert.IsTrue(res.Message == string.Empty);
-            Assert.IsTrue(res.DiagnosticData.Any());
-            Assert.IsTrue(res.DiagnosticData.Length == 1);
+            Assert.AreEqual(string.Empty, res.Message);
+            Assert.AreNotEqual(0, res.DiagnosticData.Length);
+            Assert.AreEqual(1, res.DiagnosticData.Length);
             Assert.IsNull(res.Object);
         }
 
@@ -198,22 +198,22 @@ namespace Test
         public void GenericResultErrorWithDataEx()
         {
             var ex = new InvalidOperationException("Error");
-            var data = new mockClass
+            var data = new MockClass
             {
                 Id = Guid.NewGuid(),
                 Text = "Test text"
             };
 
-            var res = new Result<mockClass>().Error(data, ex);
+            var res = new Result<MockClass>().Error(data, ex);
 
             Assert.IsNotNull(res);
             Assert.IsFalse(res.Success);
             Assert.IsNotNull(res.Object);
-            Assert.IsTrue(res.Message == string.Empty);
-            Assert.IsTrue(res.DiagnosticData.Any());
-            Assert.IsTrue(res.DiagnosticData.Length == 1);
+            Assert.AreEqual(string.Empty, res.Message);
+            Assert.AreNotEqual(0, res.DiagnosticData.Length);
+            Assert.AreEqual(1, res.DiagnosticData.Length);
 
-            Assert.IsInstanceOfType(res.Object, typeof(mockClass));
+            Assert.IsInstanceOfType(res.Object, typeof(MockClass));
             Assert.AreEqual(data.Id, res.Object.Id);
             Assert.AreEqual(data.Text, res.Object.Text);
         }
@@ -223,23 +223,23 @@ namespace Test
         {
             var msg = "Error";
             var ex = new InvalidOperationException("Error");
-            var data = new mockClass
+            var data = new MockClass
             {
                 Id = Guid.NewGuid(),
                 Text = "Test text"
             };
-            object[] optionalParams = new object[] { "uno", "dos", 3, 4.0, null };
+            object[] optionalParams = ["uno", "dos", 3, 4.0, null];
 
-            var res = new Result<mockClass>().Error(msg, data, ex, optionalParams);
+            var res = new Result<MockClass>().Error(msg, data, ex, optionalParams);
 
             Assert.IsNotNull(res);
             Assert.IsFalse(res.Success);
             Assert.IsNotNull(res.Object);
-            Assert.IsTrue(res.Message == msg);
-            Assert.IsTrue(res.DiagnosticData.Any());
-            Assert.IsTrue(res.DiagnosticData.Length == optionalParams.Length + 1);
+            Assert.AreEqual(msg, res.Message);
+            Assert.AreNotEqual(0, res.DiagnosticData.Length);
+            Assert.AreEqual(optionalParams.Length + 1, res.DiagnosticData.Length);
 
-            Assert.IsInstanceOfType(res.Object, typeof(mockClass));
+            Assert.IsInstanceOfType(res.Object, typeof(MockClass));
             Assert.AreEqual(data.Id, res.Object.Id);
             Assert.AreEqual(data.Text, res.Object.Text);
         }

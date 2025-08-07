@@ -15,7 +15,6 @@ public class Result<T> : IResult<T>
     ///   <c>true</c> if success; otherwise, <c>false</c>.
     ///   </value>
     [System.Text.Json.Serialization.JsonInclude]
-    [Newtonsoft.Json.JsonProperty]
     [XmlElement]
     public bool Success { get; set; }
 
@@ -26,7 +25,6 @@ public class Result<T> : IResult<T>
     /// </summary>
     /// <value>The message.</value>
     [System.Text.Json.Serialization.JsonInclude]
-    [Newtonsoft.Json.JsonProperty]
     [XmlElement]
     public string Message { get; set; }
 
@@ -38,7 +36,6 @@ public class Result<T> : IResult<T>
     /// </summary>
     /// <value>The diagnostic data.</value>
     [System.Text.Json.Serialization.JsonIgnore]
-    [Newtonsoft.Json.JsonIgnore]
     [XmlIgnore]
     public string[] DiagnosticData { get; set; }
 
@@ -105,7 +102,7 @@ public class Result<T> : IResult<T>
 
     /// <summary>
     /// Returns success = false
-    /// The exception is not serialized, but its message exception is included as diagnostic data.    
+    /// The exception is not serialized, but its message exception is included as diagnostic data.
     /// </summary>
     /// <param name="ex">
     /// Its message exception is included as diagnostic data.
@@ -131,8 +128,8 @@ public class Result<T> : IResult<T>
     /// <returns>The instance based on the <see cref="GenericResult.Interfaces.IResult{T}" />interface</returns>
     public IResult<T> Error(string message, T obj, Exception ex, params object[] optionalParams)
     {
-        List<string> strs = new();
-        foreach (var param in optionalParams ?? new object[0])
+        List<string> strs = [];
+        foreach (var param in optionalParams ?? [])
             strs.Add(param is Exception exception ? exception.Message : JsonSerializer.Serialize(param));
 
         if (ex is not null)
@@ -169,8 +166,8 @@ public class Result<T> : IResult<T>
     /// <returns>The instance based on the <see cref="GenericResult.Interfaces.IResult{T}" />interface</returns>
     public IResult<T> Ok(string message, T obj, params object[] optionalParams)
     {
-        List<string> strs = new();
-        foreach (var param in optionalParams ?? new object[0])
+        List<string> strs = [];
+        foreach (var param in optionalParams ?? [])
             strs.Add(param is Exception exception ? exception.Message : JsonSerializer.Serialize(param));
 
         (this.Success, this.Message, this.Object, this.DiagnosticData) = (true, message, obj, strs.ToArray());

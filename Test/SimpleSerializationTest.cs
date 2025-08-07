@@ -2,6 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.IO;
+using System.Text.Json;
 using System.Xml;
 using System.Xml.Serialization;
 
@@ -16,16 +17,16 @@ public class SimpleSerializationTest
         var ex = new InvalidOperationException("Error Test");
         var res = new Result().Error("mensaje de prueba", ex);
 
-        XmlSerializer xsSubmit = new XmlSerializer(typeof(Result));
+        XmlSerializer xsSubmit = new(typeof(Result));
         using var sww = new StringWriter();
         using XmlWriter writer = XmlWriter.Create(sww);
         xsSubmit.Serialize(writer, res);
         string xml = sww.ToString();
 
         Assert.IsNotNull(xml);
-        Assert.IsTrue(xml.ToLower().Contains("success"));
-        Assert.IsTrue(xml.ToLower().Contains("message"));
-        Assert.IsFalse(xml.ToLower().Contains("diagnosticdata"));
+        Assert.Contains("success", xml.ToLower());
+        Assert.Contains("message", xml.ToLower());
+        Assert.DoesNotContain("diagnosticdata", xml.ToLower());
     }
 
     [TestMethod]
@@ -33,17 +34,12 @@ public class SimpleSerializationTest
     {
         var ex = new InvalidOperationException("Error Test");
         var res = new Result().Error("mensaje de prueba", ex);
-        var jsonNetCore = System.Text.Json.JsonSerializer.Serialize<Result>((Result)res);
-        var jsonNewtonSoft = Newtonsoft.Json.JsonConvert.SerializeObject(res);
 
-        Assert.IsNotNull(jsonNewtonSoft);
-        Assert.IsTrue(jsonNewtonSoft.ToLower().Contains("success"));
-        Assert.IsTrue(jsonNewtonSoft.ToLower().Contains("message"));
-        Assert.IsFalse(jsonNewtonSoft.ToLower().Contains("diagnosticdata"));
+        string json = JsonSerializer.Serialize(res);
 
-        Assert.IsNotNull(jsonNetCore);
-        Assert.IsTrue(jsonNetCore.ToLower().Contains("success"));
-        Assert.IsTrue(jsonNetCore.ToLower().Contains("message"));
-        Assert.IsFalse(jsonNetCore.ToLower().Contains("diagnosticdata"));
+        Assert.IsNotNull(json);
+        Assert.IsTrue(json.ToLower().Contains("success"));
+        Assert.IsTrue(json.ToLower().Contains("message"));
+        Assert.IsFalse(json.ToLower().Contains("diagnosticdata"));
     }
 }
